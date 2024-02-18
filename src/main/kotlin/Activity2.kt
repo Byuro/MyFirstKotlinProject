@@ -25,7 +25,7 @@ fun main () {
         println("Filipino: $filipino")
         println("total average grade: $average")
 
-
+    
 
     }
 }
