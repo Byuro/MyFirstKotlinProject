@@ -1,6 +1,6 @@
 fun main() {
 
-    for(i in 1..4){
+    for (i in 1..4) {
         println("Enter your Firstname: ")
         var first = readLine()
         println("Enter your Middlename: ")
