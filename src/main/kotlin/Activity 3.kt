@@ -22,7 +22,6 @@ fun main() {
                 in 31..59 -> println("$name is Adult")
                 in 60..120 -> println("$name is Senior")
                 else -> println("$name Invalid Age")
-
             }
 
         }
