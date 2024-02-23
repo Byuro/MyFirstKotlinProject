@@ -21,7 +21,11 @@ fun main() {
                 in 18..30 -> println("$name is Young Age")
                 in 31..59 -> println("$name is Adult")
                 in 60..120 -> println("$name is Senior")
+<<<<<<< HEAD
                 else -> println("$name Invalid Age")
+=======
+                else -> println("Invalid")
+>>>>>>> origin/master
 
             }
 
