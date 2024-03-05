@@ -1,17 +1,14 @@
-fun main()
-{
+fun main() {
     while (true) {
         println("Enter a string:")
         val inputString = readLine()!!
 
-        if (isPalindrome(inputString)) {
+        val cleanString = inputString.filter { it.isLetterOrDigit() }.toLowerCase()
+
+        if (cleanString == cleanString.reversed()) {
             println("Palindrome")
-        }
-        else
-        {
+        } else {
             println("Not a Palindrome")
         }
     }
-
 }
-fun isPalindrome(str: String) = str.filter { it.isLetterOrDigit() }.toLowerCase() == str.filter { it.isLetterOrDigit() }.reversed()
