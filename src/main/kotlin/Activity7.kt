@@ -1,14 +1,23 @@
 fun main() {
     while (true) {
-        println("Enter a string:")
-        val inputString = readLine()!!
+        var pword: String? = ""
+        var palin: String? = ""
 
-        val cleanString = inputString.filter { it.isLetterOrDigit() }.toLowerCase()
-
-        if (cleanString == cleanString.reversed()) {
-            println("Palindrome")
-        } else {
-            println("Not a Palindrome")
+        println("Enter Word: ")
+        val word = readLine()
+        for (i in 0 until word!!.length) {
+            pword += word[i].toString().trim()
         }
+
+        for (i in pword!!.length - 1 downTo 0) {
+            palin += pword[i].toString().trim()
+        }
+
+        if (pword.trim() == palin) {
+            println("The word $word is a palindrome.")
+        } else {
+            println("The word $word is not a palindrome.")
+        }
+
     }
 }

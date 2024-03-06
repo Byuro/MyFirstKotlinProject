@@ -1,15 +1,12 @@
 fun main() {
-    println("Enter the first integer:")
-    val num1 = readLine()!!.toInt()
+    println("Enter two integers separated by a space:")
+    val (num1, num2) = readLine()!!.split(" ").map { it.toInt() }
 
-    println("Enter the second integer:")
-    val num2 = readLine()!!.toInt()
+    val (lower, higher) = minOf(num1, num2) to maxOf(num1, num2)
 
-    val (lower, higher) = if (num1 < num2) num1 to num2 else num2 to num1
+    val primes = (lower..higher).filter { candidate ->
+        candidate > 1 && (2 until candidate).none { candidate % it == 0 }
+    }.joinToString(", ")
 
-    println("Prime numbers between $lower and $higher:")
-    (lower..higher).filter { isPrime(it) }.joinToString(", ").let(::println)
+    println("Prime numbers between $lower and $higher: $primes")
 }
-
-fun isPrime(num: Int): Boolean =
-    num > 1 && (2 until num).none { num % it == 0 }

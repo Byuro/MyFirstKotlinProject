@@ -1,29 +1,21 @@
 fun main() {
-    while (true) {
-        println("Enter the first string:")
-        val string1 = readLine()!!.toString()
+    println("Enter first string: ")
+    var word1: String? = readLine()
 
-        println("Enter the second string:")
-        val string2 = readLine()!!.toString()
+    println("Enter second string: ")
+    var word2: String? = readLine()
 
-        // gi set nako ang input string into set of unique characters
-        val set1 = string1.toSet()
-        val set2 = string2.toSet()
+    val uniq1 = findUniqueCharacters(word1)
+    println("$word1 unique characters: $uniq1")
 
-        // nag gamit kog intersect para ma combine niya ang String input 1 and 2 nga na set na into unique characters
-        // ang purpose sa subtract is para i remove niya tong nag duplicate nga letters or characters inig mag intersect na ang 2 input string
-        val uniquechacter = (set1 + set2).subtract(set1.intersect(set2))
+    val uniq2 = findUniqueCharacters(word2)
+    println("$word2 unique characters: $uniq2")
 
-        println("Input1: $string1")
-        println("Input2: $string2")
-        println("Unique character in both string: $uniquechacter")
-        println("You want to do more? [1] Yes [2] No ")
-        val ans = readLine()!!.toInt()
-        if (ans == 1) {
-            continue
-        } else {
-            println("Thank you!!")
-            break
-        }
-    }
+    val uniq3 = findUniqueCharacters(uniq1 + uniq2)
+    println("Unique characters of both strings: $uniq3")
+}
+
+fun findUniqueCharacters(input: String?): String
+{
+    return input?.let { it.filter { char -> it.count { c -> c == char } == 1 } } ?: ""
 }
