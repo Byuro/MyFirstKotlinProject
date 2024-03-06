@@ -1,21 +1,30 @@
-fun main() {
-    println("Enter first string: ")
-    var word1: String? = readLine()
+fun main(){
+    println("Enter string")
+    var string1: String? = readln()
 
-    println("Enter second string: ")
-    var word2: String? = readLine()
+    println("Enter string")
+    var string2: String? = readln()
 
-    val uniq1 = findUniqueCharacters(word1)
-    println("$word1 unique characters: $uniq1")
+    val uniq1 = findUniqueCharacters(string1)
+    println("Unique character: $uniq1")
 
-    val uniq2 = findUniqueCharacters(word2)
-    println("$word2 unique characters: $uniq2")
+    val uniq2 = findUniqueCharacters(string2)
+    println("Unique character: $uniq2")
 
-    val uniq3 = findUniqueCharacters(uniq1 + uniq2)
-    println("Unique characters of both strings: $uniq3")
+    val combine = findUniqueCharacters(string1 + string2)
+    println("Combine Unique characters: $combine")
+
+    val total =(string1?.length!! - uniq1.length)
+    println("$total")
+    val total2 =(string2?.length!! - uniq2.length)
+    println("$total2")
+    val total3 =(total+total2)
+    print("$total3")
+
+
+
+
 }
-
-fun findUniqueCharacters(input: String?): String
-{
-    return input?.let { it.filter { char -> it.count { c -> c == char } == 1 } } ?: ""
+fun findUniqueCharacters(input:String?):String{
+    return input?.let { it.filter { char -> it.count { c-> c==char }==1 }}?:" "
 }
