@@ -1,0 +1,6 @@
+Mar 15, 2024 12:19:18 AM TestingKt addNewItem
+INFO: New item added: BorrowedItem(borrower=BANGIAN, book=BUBU, dateBorrowed=2024-03-15, daysToBorrow=5, course=BEED, schoolId=123455)
+Mar 15, 2024 12:19:44 AM TestingKt updateItem
+WARNING: Invalid index provided for update.
+Mar 15, 2024 12:20:01 AM TestingKt main
+INFO: Exiting program...
