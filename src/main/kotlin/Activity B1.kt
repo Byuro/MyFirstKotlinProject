@@ -1,77 +1,85 @@
 import mu.KotlinLogging
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-val logger = KotlinLogging.logger {}
 
-data class BorrowedItem(
-    val borrower: String,
-    val book: String,
+private val logger = KotlinLogging.logger {}
+
+data class BorrowedBook(
+    var borrower: String,
+    var book: String,
     val dateBorrowed: LocalDate,
     val daysToBorrow: Long,
-    val course: String,
-    val schoolId: String
+    var course: String,
+    val schoolId: String,
+    var returned: Boolean = false
 )
 
 fun main() {
     var option: Int
-    val borrowedItems: ArrayList<BorrowedItem> = ArrayList()
+    var borrowedBooks: ArrayList<BorrowedBook> = ArrayList()
 
     val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
     do {
         println(
             """
-            -----------------------------
-              Please select your option 
-            -----------------------------
-            [1] Add new Borrower
-            [2] Update Information
-            [3] Display Borrower
-            [4] Exit
+            ---------------------------
+            | Please select your Menu |
+            ---------------------------
+            [1] Add new 
+            [2] Update 
+            [3] Return 
+            [4] Display 
+            [5] Exit
             -----------------------------
         """.trimIndent()
         )
 
 
         print("Enter your choice: ")
-        option = readlnOrNull()?.toIntOrNull() ?: 1
+
+        option = readLine()?.toIntOrNull() ?: 1
         println("-------------------------------------")
 
         when (option) {
-            1 -> addNewItem(borrowedItems)
-            2 -> updateItem(borrowedItems)
-            3 -> displayItems(borrowedItems, dateFormatter)
-            4 -> {
-                println("Exiting program...")
+            1 -> addNew(borrowedBooks)
+            2 -> update(borrowedBooks)
+            3 -> returnInfo(borrowedBooks)
+            4 -> display(borrowedBooks, dateFormatter)
+            5 -> {
                 logger.info("Exiting program...")
+                println("Exiting program...")
+
             }
-            else -> println("Invalid option. Please try again.")
+            else -> println("Invalid menu. Please try again.")
         }
-    } while (option != 4)
+    } while (option != 5)
+
 }
 
-fun addNewItem(borrowedItems: ArrayList<BorrowedItem>) {
-    println("Enter Borrower's name:")
-    val borrower = readlnOrNull() ?: ""
+fun addNew(borrowedBooks: ArrayList<BorrowedBook>) {
 
-    println("Enter title of the book:")
-    val book = readlnOrNull() ?: ""
+    println("Enter Borrower name:")
+    val borrower = readLine() ?: ""
+
+    println("Enter the title of the book:")
+    val book = readLine() ?: ""
 
     println("Enter department:")
-    val course = readlnOrNull() ?: ""
+    val course = readLine() ?: ""
 
-    println("Enter Student ID: ")
-    val schoolId = readlnOrNull() ?: ""
+    println("Enter Student's ID: ")
+    val schoolId = readLine() ?: ""
 
-    println("Enter a Number of days you wanna borrow:")
-    val daysToBorrow = readlnOrNull()?.toLongOrNull() ?: 2
+    println("Enter a Number of days to borrow:")
+    val daysToBorrow = readLine()?.toLongOrNull() ?: 2
 
-    println("Do you really want to borrow the book? [Y/N]")
-    val confirmInput = readlnOrNull()?.toUpperCase() ?: ""
+    println("Do you really want to borrow the book? Press [1] Yes, [2] No")
+    val confirmInput = readLine()?.toUpperCase() ?: ""
 
-    if (confirmInput == "Y") {
+    if (confirmInput == "1") {
         println("Data has been successfully saved!")
-        val newItem = BorrowedItem(
+        val newBook = BorrowedBook(
             borrower.toUpperCase(),
             book.toUpperCase(),
             LocalDate.now(),
@@ -79,99 +87,129 @@ fun addNewItem(borrowedItems: ArrayList<BorrowedItem>) {
             course.toUpperCase(),
             schoolId
         )
-        borrowedItems.add(newItem)
-        logger.info("New item added: $newItem")
+        borrowedBooks.add(newBook)
+        logger.info("New book added: $newBook")
     } else {
         println("Transaction canceled.")
         logger.info("Transaction canceled.")
     }
 }
 
-fun updateItem(borrowedItems: ArrayList<BorrowedItem>) {
-    if (borrowedItems.isEmpty()) {
-        println("No items to update.")
-        logger.warn("Attempted to update with no items.")
+fun update(borrowedBooks: ArrayList<BorrowedBook>) {
+    if (borrowedBooks.isEmpty()) {
+        println("No transaction to update.")
+        logger.warn("Attempted to update with no transactions.")
         return
     }
 
-    println("Enter the index of the item you want to update:")
-    val index = readlnOrNull()?.toIntOrNull()
+    println("Enter the index of the list you want to update:")
+    val index = readLine()?.toIntOrNull()
 
-    if (index == null || index !in 0 until borrowedItems.size) {
+    if (index == null || index !in 0 until borrowedBooks.size) {
         println("Invalid index.")
         logger.warn("Invalid index provided for update.")
         return
     }
 
-    val currentItem = borrowedItems[index]
+    val currentList  = borrowedBooks[index]
 
-    println("Current details:")
-    displayItem(currentItem)
+    println("Current info:")
+    displayItem(currentList)
 
-    println("Enter new details:")
+    println("Enter new info:")
 
-    println("Enter Borrower's name:")
-    val borrower = readlnOrNull() ?: currentItem.borrower
+    println("Enter Borrower name:")
+    val borrower = readLine() ?: currentList.borrower
 
-    println("Enter title of the book:")
-    val book = readlnOrNull() ?: currentItem.book
+    println("Enter the title of the book:")
+    val book = readLine() ?: currentList.book
 
     println("Enter department:")
-    val course = readlnOrNull() ?: currentItem.course
+    val course = readLine() ?: currentList.course
 
     println("Enter School ID: ")
-    val schoolId = readlnOrNull() ?: currentItem.schoolId
+    val schoolId = readLine() ?: currentList.schoolId
 
-    println("Enter a Number of days you wanna borrow:")
-    val daysToBorrow = readlnOrNull()?.toLongOrNull() ?: currentItem.daysToBorrow
+    println("Enter a Number of days to borrow:")
+    val daysToBorrow = readLine()?.toLongOrNull() ?: currentList.daysToBorrow
 
-    borrowedItems[index] = BorrowedItem(
+    borrowedBooks[index] = BorrowedBook(
         borrower,
         book,
-        currentItem.dateBorrowed,
+        currentList.dateBorrowed,
         daysToBorrow,
         course,
         schoolId
     )
-    println("Item updated successfully!")
-    logger.info("Item updated: $currentItem -> ${borrowedItems[index]}")
+    println("transaction updated successfully!")
+    logger.info("Transaction updated: $currentList -> ${borrowedBooks[index]}")
 }
 
-fun displayItems(items: ArrayList<BorrowedItem>, dateFormatter: DateTimeFormatter) {
-    println("List of Borrowed")
-    println("INDEX --> NAME      |    BOOK    |   DATE BORROWED   |     DATE RETURN     |   DURATION (DAYS)   |     COURSE     |    SCHOOL ID")
-    println("----------------------------------------------------------------------------------------------------------------------------------")
-
-    if (items.isEmpty()) {
-        println("There's no record yet added.")
-        logger.info("No items to display.")
+fun returnInfo(borrowedBooks: ArrayList<BorrowedBook>) {
+    if (borrowedBooks.isEmpty()) {
+        println("No books to return.")
+        logger.warn("Attempted to return with no books.")
         return
     }
 
-    for ((index, item) in items.withIndex()) {
+    println("Enter the index of the book you want to return:")
+    val index = readLine()?.toIntOrNull()
+
+    if (index == null || index !in 0 until borrowedBooks.size) {
+        println("Invalid index.")
+        logger.warn("Invalid index provided for return.")
+        return
+    }
+
+    val returnedBook = borrowedBooks[index]
+
+    if (returnedBook.returned) {
+        println("This book has already been returned.")
+        logger.warn("Attempted to return an already returned book.")
+        return
+    }
+
+    returnedBook.returned = true
+    println("Book returned successfully!")
+    logger.info("Book returned: $returnedBook")
+}
+
+fun display(list: ArrayList<BorrowedBook>, dateFormatter: DateTimeFormatter) {
+    println("List of Borrowed")
+    println("INDEX --> NAME | BOOK | DATE BORROWED | DATE RETURN | DURATION (DAYS) | COURSE | SCHOOL ID | RETURNED")
+    println("----------------------------------------------------------------------------------------------------------------------------------")
+
+    if (list.isEmpty()) {
+        println("There's no record yet added.")
+        logger.info("No transaction to display.")
+        return
+    }
+
+    for ((index, data ) in list.withIndex()) {
         println(
-            "$index\t | ${item.borrower} | ${item.book} | ${
-                item.dateBorrowed.format(
+            "$index\t | ${data.borrower} | ${data.book} | ${
+                data.dateBorrowed.format(
                     dateFormatter
                 )
-            } | ${item.dateBorrowed.plusDays(item.daysToBorrow).format(dateFormatter)} | ${item.daysToBorrow} | ${item.course} | ${item.schoolId}"
+            } | ${data.dateBorrowed.plusDays(data.daysToBorrow).format(dateFormatter)} | ${data.daysToBorrow} | ${data.course} | ${data.schoolId} | ${if (data.returned) "Yes" else "No"}"
         )
     }
 }
 
-fun displayItem(item: BorrowedItem) {
-    println("INDEX --> NAME      |    BOOK    |   DATE BORROWED   |     DATE RETURN     |   DURATION (DAYS)   |     COURSE     |    SCHOOL ID")
+fun displayItem(data: BorrowedBook) {
+    println("INDEX --> NAME      |    BOOK    |   DATE BORROWED   |     DATE RETURN     |   DURATION (DAYS)   |     COURSE     |    SCHOOL ID | RETURNED")
     println("----------------------------------------------------------------------------------------------------------------------------------")
     println(
-        "${item.borrower}   |  ${item.book}    |     ${
-            item.dateBorrowed.format(
+        "${data.borrower}   |  ${data.book}    |     ${
+            data.dateBorrowed.format(
                 DateTimeFormatter.ofPattern("yyyy-MM-dd")
             )
         } |     ${
-            item.dateBorrowed
+            data.dateBorrowed
                 .atStartOfDay()
-                .plusDays(item.daysToBorrow)
+                .plusDays(data.daysToBorrow)
                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
-        }   |     ${item.daysToBorrow}    |   ${item.course}    |   ${item.schoolId}"
+        }   |     ${data.daysToBorrow}    |   ${data.course}    |   ${data.schoolId}   |   ${if (data.returned) "Yes" else "No"}"
     )
 }
+
